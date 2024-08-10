@@ -69,7 +69,4 @@ public class Biblioteca {
             System.err.println("Ocorreu um erro ao tentar atualizar a lista: " + e.getMessage());
         }
     }
-
-
-
 }
