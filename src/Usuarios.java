@@ -3,12 +3,8 @@ public class Usuarios {
     private String nome;
     
     public Usuarios(int idade, String nome) {
-        this.idade = idade;
-        this.nome = nome;
-    }
-    public Usuarios() {
-        this.idade = 0;
-        this.nome = "";
+        setIdade(idade);
+        setNome(nome);
     }
 
     public int getIdade() {
@@ -25,7 +21,7 @@ public class Usuarios {
         return nome;
     }
     public void setNome(String nome) {
-        if (nome == null || nome.length() < 3) {
+        if (nome.isEmpty() || nome.length() < 3) {
             throw new IllegalArgumentException("Informe um nome válido.");
         }
         this.nome = nome;

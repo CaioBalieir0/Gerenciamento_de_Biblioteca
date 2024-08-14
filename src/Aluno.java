@@ -3,11 +3,10 @@ public class Aluno extends Usuarios {
 
     public Aluno(int idade, String nome, String curso) {
         super(idade, nome);
-        this.curso = curso;
-        ocupacao = "Aluno";
-    }
-    public Aluno() {
-        this.curso = "";
+        if (idade <= 16) {
+            throw new IllegalArgumentException("A idade do aluno deve ser maior que 15 anos.");
+        }
+        setCurso(curso);
         ocupacao = "Aluno";
     }
 

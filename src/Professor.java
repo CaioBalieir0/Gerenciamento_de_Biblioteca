@@ -6,12 +6,7 @@ public class Professor extends Usuarios{
         if (idade <= 25) {
             throw new IllegalArgumentException("A idade do professor deve ser maior que 25 anos.");
         }
-        this.materia = materia;
-        ocupacao = "Professor";
-    }
-    public Professor() {
-        super();
-        materia = "";
+        setMateria(materia);
         ocupacao = "Professor";
     }
 
