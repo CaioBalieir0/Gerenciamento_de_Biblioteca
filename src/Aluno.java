@@ -20,6 +20,10 @@ public class Aluno extends Usuarios {
         this.curso = curso;
     }
 
+    public String getOcupacao() {
+        return ocupacao;
+    }
+
     @Override
     public String toString() {
         return ocupacao + ";" + super.toString() + ";" + curso;

@@ -25,7 +25,7 @@ public class Biblioteca {
         BufferedWriter bw = new BufferedWriter(new FileWriter("Livros.txt", true));
         BufferedReader br = new BufferedReader(new FileReader("Livros.txt"))
         ) {
-            if (livrosLista != null) {
+            if (!livrosLista.isEmpty()) {
                 for (Livros l : livrosLista) {
                     if (l.getIsbn() == livro.getIsbn() || l.getTitulo().equalsIgnoreCase(livro.getTitulo())) {
                         System.out.println("Título e/ou ISBN ja existente.");
@@ -83,6 +83,18 @@ public class Biblioteca {
             attListas();
         } catch (IOException e) {
             System.out.println("Não foi possível atualizar a lista." + e.getMessage());
+        }
+
+        if (!usuarioLista.isEmpty()) {
+            for (Usuarios u : usuarioLista) {
+                if (u instanceof Aluno && usuario instanceof Aluno && usuario.getNome().equalsIgnoreCase(u.getNome())) {
+                    System.out.println("Aluno chamado: " + usuario.getNome() + " já cadastrado");
+                    return;
+                } else if (u instanceof Professor && usuario instanceof Professor && usuario.getNome().equalsIgnoreCase(u.getNome())) {
+                    System.out.println("Professor chamado: " + usuario.getNome() + " já cadastrado");
+                    return;
+                }
+            }
         }
 
         try (

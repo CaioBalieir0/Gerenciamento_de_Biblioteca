@@ -20,6 +20,10 @@ public class Professor extends Usuarios{
         this.materia = materia;
     }
 
+    public String getOcupacao() {
+        return ocupacao;
+    }
+
     @Override
     public String toString() {
         return ocupacao + ";" + super.toString() + ";" + materia;
