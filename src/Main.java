@@ -27,8 +27,10 @@ public class Main {
                             livro.setAutor(entrada.nextLine());
                             System.out.print("Informe o ano do livro: ");
                             livro.setAno(entrada.nextInt());
+                            entrada.nextLine();
                             System.out.print("Informe o ISBN do livro (somente números): ");
-                            livro.setIsbn(entrada.nextInt());;
+                            livro.setIsbn(entrada.nextInt());
+                            entrada.nextLine();
                             biblioteca.addLivro(livro);
                             break;
                         } catch (Exception e) {
@@ -68,7 +70,41 @@ public class Main {
                         }
                     }
                 }
+                case 3 -> {
+                    while (true) {
+                        System.out.println("\nRemover um livro:");
+                        if (!biblioteca.mostrarLivros()) {
+                            return;
+                        }
+                        System.out.println();
+                        System.out.print("Informe o ISBN do livro: ");
+                        biblioteca.rmvLivro(entrada.nextInt());
+                        entrada.nextLine();
+                        System.out.print("Deseja realizar a operação novamente (Sim/Não)?");
+                        if (!entrada.nextLine().equalsIgnoreCase("sim")) {
+                            break;
+                        }
+                    }
+                }
+            
+                case 4 -> {
+                    while (true) {
+                        System.out.println("\nRemover um usuário:");
+                        if (!biblioteca.mostrarUsuarios()) {
+                            return;
+                        }
+                        System.out.println();
+                        System.out.print("Informe o nome do usuário: ");
+                        biblioteca.rmvUsuario(entrada.nextLine());
+                        System.out.print("Deseja realizar a operação novamente (Sim/Não)?");
+                        if (!entrada.nextLine().equalsIgnoreCase("sim")) {
+                            break;
+                        }
+                    }
+                }
+            
             }
+            entrada.close();
         }
     }
 }

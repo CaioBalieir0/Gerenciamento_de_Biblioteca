@@ -48,7 +48,7 @@ public class Biblioteca {
             System.out.println("Não foi possível atualizar a lista. " + e.getMessage());
         }
 
-        if (livrosLista == null) {
+        if (livrosLista.isEmpty()) {
             System.out.println("Nenhum livro adicionado na biblioteca.");
             return;
         }
@@ -131,7 +131,6 @@ public class Biblioteca {
         }
     }
 
-
     public void attListas() throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader("Usuario.txt"))) {
             usuarioLista.clear();
@@ -156,4 +155,38 @@ public class Biblioteca {
         }
     }
 
+    public boolean mostrarLivros() {
+        try {
+            attListas();
+        } catch (IOException e) {
+            System.out.println("Não foi possível atualizar a lista. " + e.getMessage());
+        }
+
+        if (livrosLista.isEmpty()) {
+            System.out.println("Nenhum livro adicionado na biblioteca.");
+            return false;
+        }
+
+        for (Livros l : livrosLista) {
+            System.out.println(l);
+        }
+        return true;
+    }
+    public boolean mostrarUsuarios() {
+        try {
+            attListas();
+        } catch (IOException e) {
+            System.out.println("Não foi possível atualizar a lista. " + e.getMessage());
+        }
+
+        if (usuarioLista.isEmpty()) {
+            System.out.println("Nenhum usuário cadastrado.");
+            return false;
+        }
+
+        for (Usuarios u : usuarioLista) {
+            System.out.println(u);
+        }
+        return true;
+    }
 }
