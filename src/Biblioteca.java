@@ -5,10 +5,13 @@ import java.util.List;
 public class Biblioteca {
     private List<Livros> livrosLista;
     private List<Usuarios> usuarioLista;
+    BufferedWriter bw;
 
     public Biblioteca() throws IOException {
         this.livrosLista = new ArrayList<>();
         this.usuarioLista = new ArrayList<>();
+        this.bw = new BufferedWriter(new FileWriter("Livros.txt", true));
+        this.bw = new BufferedWriter(new FileWriter("Usuario.txt", true));
     }
 
     public void addLivro(Livros livro) throws IOException {
@@ -17,6 +20,7 @@ public class Biblioteca {
         } catch (IOException e) {
             System.out.println("Não foi possível atualizar a lista." + e.getMessage());
         }
+
         try (
         BufferedWriter bw = new BufferedWriter(new FileWriter("Livros.txt", true));
         BufferedReader br = new BufferedReader(new FileReader("Livros.txt"))
@@ -38,7 +42,12 @@ public class Biblioteca {
     }
 
     public void rmvLivro(int isbn) throws IOException {
-        
+        try {
+            attListas();
+        } catch (IOException e) {
+            System.out.println("Não foi possível atualizar a lista. " + e.getMessage());
+        }
+
         if (livrosLista == null) {
             System.out.println("Nenhum livro adicionado na biblioteca.");
             return;
@@ -70,14 +79,20 @@ public class Biblioteca {
     }
 
     public void addUsuario(Usuarios usuario) {
-            try (
-            BufferedWriter bw = new BufferedWriter(new FileWriter("Usuario.txt", true));
-            BufferedReader br = new BufferedReader(new FileReader("Usuario.txt"))) {
-                bw.write(usuario.toString());
-                bw.newLine();
-                } catch (IOException e) {
-                    System.out.println("Ocorreu um erro ao tentar adicionar o aluno: " + e.getMessage());
-                }
+        try {
+            attListas();
+        } catch (IOException e) {
+            System.out.println("Não foi possível atualizar a lista." + e.getMessage());
+        }
+
+        try (
+        BufferedWriter bw = new BufferedWriter(new FileWriter("Usuario.txt", true));
+        BufferedReader br = new BufferedReader(new FileReader("Usuario.txt"))) {
+            bw.write(usuario.toString());
+            bw.newLine();
+        } catch (IOException e) {
+            System.out.println("Ocorreu um erro ao tentar adicionar o aluno: " + e.getMessage());
+        }
     }
 
     public void rmvUsuario(String nome) {
@@ -86,13 +101,34 @@ public class Biblioteca {
         } catch (IOException e) {
             System.out.println("Não foi possível atualizar a lista." + e.getMessage());
         }
+
         if (usuarioLista == null) {
             System.out.println("Nenhum usuário do sistema da biblioteca cadastrado.");
             return;
         }
 
+        Usuarios usuarioARemover = null;
+        for (Usuarios u : usuarioLista) {
+            if (u.getNome().equalsIgnoreCase(nome)) {
+                usuarioARemover = u;
+                break;
+            }
+        }
+        if (usuarioARemover == null) {
+            System.out.println("Não existe nenhum usuário cadastrado como: " + nome);
+            return;
+        }
+        System.out.println("Usuário: " + nome + " removido com sucesso.");
+        usuarioLista.remove(usuarioARemover);
 
-        
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("Usuario.txt"))) {
+            for (Usuarios u : usuarioLista) {
+                bw.write(u.toString());
+                bw.newLine();
+            }
+        } catch (Exception e) {
+            System.out.println("Não foi possível atualizar a lista de usuários após a remoção." + e.getMessage());
+        }
     }
 
 
@@ -103,9 +139,9 @@ public class Biblioteca {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(";");
                 if (dados[0].equals("Professor")) {
-                    usuarioLista.add(new Professor(Integer.parseInt(dados[1]), dados[0], dados[2]));
+                    usuarioLista.add(new Professor(Integer.parseInt(dados[2]), dados[1], dados[3]));
                 } else {
-                    usuarioLista.add(new Aluno(Integer.parseInt(dados[1]), dados[0], dados[2]));
+                    usuarioLista.add(new Aluno(Integer.parseInt(dados[2]), dados[1], dados[3]));
                 }
             }
         }
