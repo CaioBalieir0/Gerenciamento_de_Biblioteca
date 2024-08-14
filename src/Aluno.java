@@ -1,12 +1,14 @@
 public class Aluno extends Usuarios {
-    private String curso;
+    private String curso, ocupacao;
 
     public Aluno(int idade, String nome, String curso) {
         super(idade, nome);
         this.curso = curso;
+        ocupacao = "Aluno";
     }
     public Aluno() {
         this.curso = "";
+        ocupacao = "Aluno";
     }
 
     public String getCurso() {
@@ -17,5 +19,10 @@ public class Aluno extends Usuarios {
             throw new IllegalArgumentException("Curso inválido.");
         }
         this.curso = curso;
+    }
+
+    @Override
+    public String toString() {
+        return ocupacao + ";" + super.toString() + ";" + curso;
     }
 }

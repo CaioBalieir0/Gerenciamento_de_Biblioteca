@@ -1,5 +1,5 @@
 public class Professor extends Usuarios{
-    private String materia;
+    private String materia, ocupacao;
 
     public Professor(int idade, String nome, String materia) {
         super(idade, nome);
@@ -7,10 +7,12 @@ public class Professor extends Usuarios{
             throw new IllegalArgumentException("A idade do professor deve ser maior que 25 anos.");
         }
         this.materia = materia;
+        ocupacao = "Professor";
     }
     public Professor() {
         super();
         materia = "";
+        ocupacao = "Professor";
     }
 
     public String getMateria() {
@@ -23,7 +25,8 @@ public class Professor extends Usuarios{
         this.materia = materia;
     }
 
-
-
-
+    @Override
+    public String toString() {
+        return ocupacao + ";" + super.toString() + ";" + materia;
+    }
 }
