@@ -14,6 +14,13 @@ public class Biblioteca {
         this.bw = new BufferedWriter(new FileWriter("Usuario.txt", true));
     }
 
+    public List<Livros> getLivrosLista() {
+        return livrosLista;
+    }
+    public List<Usuarios> getUsuarioLista() {
+        return usuarioLista;
+    }
+
     public void addLivro(Livros livro) throws IOException {
         try {
             attListas();
@@ -41,7 +48,7 @@ public class Biblioteca {
         
     }
 
-    public void rmvLivro(int isbn) throws IOException {
+    public Livros rmvLivro(int isbn) throws IOException {
         try {
             attListas();
         } catch (IOException e) {
@@ -50,7 +57,7 @@ public class Biblioteca {
 
         if (livrosLista.isEmpty()) {
             System.out.println("Nenhum livro adicionado na biblioteca.");
-            return;
+            return null;
         }
 
         Livros livroARemover = null;
@@ -63,7 +70,7 @@ public class Biblioteca {
 
         if (livroARemover == null) {
             System.out.println("Livro com ISBN: " + isbn + " não encontrado.");
-            return;
+            return null;
         } 
         System.out.println("Livro: " + livroARemover.getTitulo() + " ISBN: " + livroARemover.getIsbn() + " removido com sucesso.");
         livrosLista.remove(livroARemover);
@@ -76,6 +83,7 @@ public class Biblioteca {
         } catch (IOException e) {
             System.err.println("Ocorreu um erro ao tentar atualizar a lista: " + e.getMessage());
         }
+        return livroARemover;
     }
 
     public void addUsuario(Usuarios usuario) {
@@ -107,7 +115,7 @@ public class Biblioteca {
         }
     }
 
-    public void rmvUsuario(String nome) {
+    public Usuarios rmvUsuario(String nome) {
         try {
             attListas();
         } catch (IOException e) {
@@ -116,7 +124,7 @@ public class Biblioteca {
 
         if (usuarioLista == null) {
             System.out.println("Nenhum usuário do sistema da biblioteca cadastrado.");
-            return;
+            return null;
         }
 
         Usuarios usuarioARemover = null;
@@ -128,7 +136,7 @@ public class Biblioteca {
         }
         if (usuarioARemover == null) {
             System.out.println("Não existe nenhum usuário cadastrado como: " + nome);
-            return;
+            return null;
         }
         System.out.println("Usuário: " + nome + " removido com sucesso.");
         usuarioLista.remove(usuarioARemover);
@@ -141,6 +149,7 @@ public class Biblioteca {
         } catch (Exception e) {
             System.out.println("Não foi possível atualizar a lista de usuários após a remoção." + e.getMessage());
         }
+        return usuarioARemover;
     }
 
     public void attListas() throws IOException {
@@ -162,7 +171,7 @@ public class Biblioteca {
             String linha;
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(";");
-                livrosLista.add(new Livros(dados[0], dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3])));
+                livrosLista.add(new Livros(dados[0], dados[1], Integer.parseInt(dados[2]), Integer.parseInt(dados[3]), Integer.parseInt(dados[4])));
             }
         }
     }

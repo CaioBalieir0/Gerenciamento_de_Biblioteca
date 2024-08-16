@@ -5,6 +5,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Scanner entrada = new Scanner(System.in);
         Biblioteca biblioteca = new Biblioteca();
+        GerenciaEmprestimo gerenciaEmprestimo = new GerenciaEmprestimo();
 
         while (true) {
             System.out.println("--- Menu biblioteca ---");
@@ -12,6 +13,7 @@ public class Main {
             System.out.println("2) Cadastrar usuário");
             System.out.println("3) Remover livro");
             System.out.println("4) Remover usuário");
+            System.out.println("5) Emprestar livro:");
             System.out.print(">> Opção: ");
             int opc = entrada.nextInt();
             entrada.nextLine();
@@ -30,6 +32,8 @@ public class Main {
                             entrada.nextLine();
                             System.out.print("Informe o ISBN do livro (somente números): ");
                             livro.setIsbn(entrada.nextInt());
+                            System.out.print("Informe a quantidade de exemplares: ");
+                            livro.setExemplares((entrada.nextInt()));
                             entrada.nextLine();
                             biblioteca.addLivro(livro);
                             break;
@@ -101,6 +105,29 @@ public class Main {
                             break;
                         }
                     }
+                }
+            
+                case 5 -> {
+                    System.out.println("\nInforme o livro e o usuário que deseja emprestar:");
+                    if (!biblioteca.mostrarLivros()) {
+                        return;
+                    }
+                    System.out.println();
+                    System.out.print("Informe o ISBN do livro: ");
+                    Livros livro = biblioteca.rmvLivro(entrada.nextInt());
+                    System.out.println(livro);
+                    entrada.nextLine();
+
+                    if (!biblioteca.mostrarUsuarios()) {
+                        return;
+                    }
+                    System.out.println();
+                    System.out.print("Informe o nome do usuário: ");
+                    Usuarios usuarios = biblioteca.rmvUsuario(entrada.nextLine());
+
+                    gerenciaEmprestimo.emprestarLivro(usuarios, livro);
+                    System.out.println("OLAAAAAA");
+                    gerenciaEmprestimo.listarEmprestimos();
                 }
             }
         }

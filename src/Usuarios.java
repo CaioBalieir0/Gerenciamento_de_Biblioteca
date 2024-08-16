@@ -1,10 +1,12 @@
 public class Usuarios {
     private int idade;
     private String nome;
+    private boolean livros;
     
     public Usuarios(int idade, String nome) {
         setIdade(idade);
         setNome(nome);
+        livros = false;
     }
 
     public int getIdade() {
@@ -27,8 +29,15 @@ public class Usuarios {
         this.nome = nome;
     }
 
+    public boolean hasLivros() {
+        return livros;
+    }
+    public void setLivros(boolean livros) {
+        this.livros = livros;
+    }
+
     @Override
     public String toString() {
-        return nome + ";" + idade;
+        return nome + ";" + idade + ";" + (livros ? "Ocupado" : "Livre");
     }
 }

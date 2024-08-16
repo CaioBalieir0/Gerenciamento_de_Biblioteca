@@ -1,12 +1,13 @@
 public class Livros {
     private String titulo, autor;
-    private int ano, isbn;
+    private int ano, isbn, exemplares;
 
-    public Livros(String titulo, String autor, int ano, int isbn) {
+    public Livros(String titulo, String autor, int ano, int isbn, int exemplares) {
         setTitulo(titulo);
         setAno(ano);
         setAutor(autor);
         setIsbn(isbn);
+        setExemplares(exemplares);
     }
     public Livros(){}
     
@@ -43,6 +44,16 @@ public class Livros {
         }
     }
 
+    public int getExemplares() {
+        return exemplares;
+    }
+    public void setExemplares(int exemplares) {
+        if (exemplares < 0) {
+            throw new IllegalArgumentException("O número de exemplares deve ser maior que 0");
+        }
+        this.exemplares = exemplares;
+    }
+
     public int getIsbn() {
         return isbn;
     }
@@ -55,6 +66,6 @@ public class Livros {
 
     @Override
     public String toString() {
-        return titulo + ";" + autor + ";" + ano + ";" + isbn;
+        return titulo + ";" + autor + ";" + ano + ";" + isbn + ";" + exemplares;
     }
 }
