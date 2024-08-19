@@ -17,6 +17,11 @@ public class GerenciaEmprestimo {
     }
 
     public void listarEmprestimos() {
+        if (emprestimoLista.isEmpty()) {
+            System.out.println("Lista de empréstimos vazia.");
+            return;
+        }
+
         for (Emprestimo e : emprestimoLista) {
             System.out.println(e.toString());
         }

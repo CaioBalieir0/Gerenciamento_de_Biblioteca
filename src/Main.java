@@ -14,6 +14,7 @@ public class Main {
             System.out.println("3) Remover livro");
             System.out.println("4) Remover usuário");
             System.out.println("5) Emprestar livro:");
+            System.out.println("6) Listar empréstimos:");
             System.out.print(">> Opção: ");
             int opc = entrada.nextInt();
             entrada.nextLine();
@@ -64,17 +65,16 @@ public class Main {
                             if (tipo.equalsIgnoreCase("Aluno")) {
                                 System.out.print("Informe o curso que está matriculado: ");
                                 String curso = entrada.nextLine();
-                                if (biblioteca.addUsuario(new Aluno(idade, nome, curso))) {
+                                if (!biblioteca.addUsuario(new Aluno(idade, nome, curso))) {
                                     System.out.println("Aluno chamado: " + nome + " já cadastrado");
-                                }
+                                } else System.out.println("Usuário cadastrado com sucesso");
                             } else {
                                 System.out.print("Informe a matéria lecionada: ");
                                 String materia = entrada.nextLine();
-                                if (biblioteca.addUsuario(new Professor(idade, nome, materia))) {
+                                if (!biblioteca.addUsuario(new Professor(idade, nome, materia))) {
                                     System.out.println("Professor chamado: " + nome + " já cadastrado");
-                                }
+                                } else System.out.println("Usuário cadastrado com sucesso");
                             }
-                            System.out.println("Usuário cadastrado com sucesso.");
                             break;
                         } catch (Exception e) {
                             System.out.println(e.getMessage() + "\n");
@@ -86,11 +86,14 @@ public class Main {
                         System.out.println("\nRemover um livro:");
                         if (!biblioteca.mostrarLivros()) {
                             System.out.println("Nenhum livro adicionado na biblioteca.");
-                            return;
+                            break;
                         }
                         System.out.println();
                         System.out.print("Informe o ISBN do livro: ");
                         Livros livro = biblioteca.rmvLivro(entrada.nextInt());
+                        if (livro == null) {
+                            break;
+                        }
                         entrada.nextLine();
                         System.out.println("Livro \"" + livro.getTitulo() + "\" ISBN: " + livro.getIsbn() + " removido com sucesso");
                         System.out.print("Deseja realizar a operação novamente (Sim/Não)?");
@@ -100,8 +103,12 @@ public class Main {
                     }
                 }
                 case 4 -> {
+                    System.out.println("\nRemover um usuário:");
                     while (true) {
-                        removerUsuario();
+                        Usuarios usuario = removerUsuario();
+                        if (usuario == null) {
+                            break;
+                        }
                         System.out.print("Deseja realizar a operação novamente (Sim/Não)?");
                         if (!entrada.nextLine().equalsIgnoreCase("sim")) {
                             break;
@@ -110,27 +117,29 @@ public class Main {
                 }
             
                 case 5 -> {
-                    System.out.println("\nInforme o livro e o usuário que deseja emprestar:");
+                    System.out.println("\nLista de livros:");
                     if (!biblioteca.mostrarLivros()) {
                         return;
                     }
                     System.out.println();
                     System.out.print("Informe o ISBN do livro: ");
                     Livros livro = biblioteca.rmvLivro(entrada.nextInt());
+                    if (livro == null) return;
                     System.out.println(livro);
                     entrada.nextLine();
 
+                    System.out.println("Lista de usuários:");
                     Usuarios usuario = removerUsuario();
+                    if (usuario == null) return;
 
                     gerenciaEmprestimo.emprestarLivro(usuario, livro);
-                    gerenciaEmprestimo.listarEmprestimos();
                 }
+                case 6 -> gerenciaEmprestimo.listarEmprestimos();
             }
         }
     }
 
     public static Usuarios removerUsuario() throws IOException {
-        System.out.println("\nRemover um usuário:");
         Biblioteca biblioteca = new Biblioteca();
             if (!biblioteca.mostrarUsuarios()) {
                 return null;

@@ -44,7 +44,4 @@ public class Emprestimo {
     public String toString() {
         return livro + ";" + usuarios + ";" + dataEmprestimo + ";" + dataDevolucao;
     }
-
-    
-    
 }

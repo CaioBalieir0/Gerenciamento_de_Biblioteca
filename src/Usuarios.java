@@ -14,7 +14,7 @@ public class Usuarios {
     }
     public void setIdade(int idade) {
         if (idade < 16) {
-            throw new IllegalArgumentException("Idade precisa ser maior que 15 anos.");
+            throw new IllegalArgumentException("Idade do usuário precisa ser maior que 15 anos.");
         }
         this.idade = idade;
     }

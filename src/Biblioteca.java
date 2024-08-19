@@ -70,7 +70,6 @@ public class Biblioteca {
             System.out.println("Livro com ISBN: " + isbn + " não encontrado.");
             return null;
         } 
-        System.out.println("Livro: " + livroARemover.getTitulo() + " ISBN: " + livroARemover.getIsbn() + " removido com sucesso.");
         livrosLista.remove(livroARemover);
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("Livros.txt"));) {
@@ -157,9 +156,9 @@ public class Biblioteca {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(";");
                 if (dados[0].equals("Professor")) {
-                    usuarioLista.add(new Professor(Integer.parseInt(dados[2]), dados[1], dados[3]));
+                    usuarioLista.add(new Professor(Integer.parseInt(dados[2]), dados[1], dados[4]));
                 } else {
-                    usuarioLista.add(new Aluno(Integer.parseInt(dados[2]), dados[1], dados[3]));
+                    usuarioLista.add(new Aluno(Integer.parseInt(dados[2]), dados[1], dados[4]));
                 }
             }
         }
