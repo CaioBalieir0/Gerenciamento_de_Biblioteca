@@ -21,7 +21,7 @@ public class Biblioteca {
         return usuarioLista;
     }
 
-    public void addLivro(Livros livro) throws IOException {
+    public boolean addLivro(Livros livro) throws IOException {
         try {
             attListas();
         } catch (IOException e) {
@@ -34,9 +34,8 @@ public class Biblioteca {
         ) {
             if (!livrosLista.isEmpty()) {
                 for (Livros l : livrosLista) {
-                    if (l.getIsbn() == livro.getIsbn() || l.getTitulo().equalsIgnoreCase(livro.getTitulo())) {
-                        System.out.println("Título e/ou ISBN ja existente.");
-                        return;
+                    if (l.getIsbn() == livro.getIsbn()) {
+                        return false;
                     }
                 }    
             }
@@ -45,9 +44,8 @@ public class Biblioteca {
         } catch (IOException e) {
             System.err.println("Ocorreu um erro ao tentar adicionar o livro: " + e.getMessage());
         }
-        
+        return true;
     }
-
     public Livros rmvLivro(int isbn) throws IOException {
         try {
             attListas();
@@ -86,7 +84,7 @@ public class Biblioteca {
         return livroARemover;
     }
 
-    public void addUsuario(Usuarios usuario) {
+    public boolean addUsuario(Usuarios usuario) {
         try {
             attListas();
         } catch (IOException e) {
@@ -96,11 +94,9 @@ public class Biblioteca {
         if (!usuarioLista.isEmpty()) {
             for (Usuarios u : usuarioLista) {
                 if (u instanceof Aluno && usuario instanceof Aluno && usuario.getNome().equalsIgnoreCase(u.getNome())) {
-                    System.out.println("Aluno chamado: " + usuario.getNome() + " já cadastrado");
-                    return;
+                    return false;
                 } else if (u instanceof Professor && usuario instanceof Professor && usuario.getNome().equalsIgnoreCase(u.getNome())) {
-                    System.out.println("Professor chamado: " + usuario.getNome() + " já cadastrado");
-                    return;
+                    return false;
                 }
             }
         }
@@ -113,9 +109,9 @@ public class Biblioteca {
         } catch (IOException e) {
             System.out.println("Ocorreu um erro ao tentar adicionar o aluno: " + e.getMessage());
         }
+        return true;
     }
-
-    public Usuarios rmvUsuario(String nome) {
+    public Usuarios rmvUsuario(String nome, String tipo) {
         try {
             attListas();
         } catch (IOException e) {
@@ -128,14 +124,16 @@ public class Biblioteca {
         }
 
         Usuarios usuarioARemover = null;
+        Class<?> tipoClasse = (tipo.equalsIgnoreCase("Aluno") ? Aluno.class : Professor.class);
         for (Usuarios u : usuarioLista) {
-            if (u.getNome().equalsIgnoreCase(nome)) {
+            if (u.getNome().equalsIgnoreCase(nome) && tipoClasse.isInstance(u)) {
                 usuarioARemover = u;
                 break;
             }
         }
+        
         if (usuarioARemover == null) {
-            System.out.println("Não existe nenhum usuário cadastrado como: " + nome);
+            System.out.println("Não existe nenhum " + tipoClasse.getSimpleName() + " chamado " + nome);
             return null;
         }
         System.out.println("Usuário: " + nome + " removido com sucesso.");
@@ -184,7 +182,6 @@ public class Biblioteca {
         }
 
         if (livrosLista.isEmpty()) {
-            System.out.println("Nenhum livro adicionado na biblioteca.");
             return false;
         }
 

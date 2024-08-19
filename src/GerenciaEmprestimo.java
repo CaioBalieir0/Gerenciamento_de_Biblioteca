@@ -24,7 +24,7 @@ public class GerenciaEmprestimo {
 
     public void emprestarLivro(Usuarios usuario, Livros livro) throws IOException {
         if (livro.getExemplares() < 1) {
-            System.out.println("Não ha exemplares disponiveis.");
+            System.out.println("Não ha exemplares disponiveis para este livro.");
             return;
         }
         if (usuario.hasLivros()) {

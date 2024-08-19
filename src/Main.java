@@ -2,8 +2,8 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
+    static Scanner entrada = new Scanner(System.in);
     public static void main(String[] args) throws IOException {
-        Scanner entrada = new Scanner(System.in);
         Biblioteca biblioteca = new Biblioteca();
         GerenciaEmprestimo gerenciaEmprestimo = new GerenciaEmprestimo();
 
@@ -35,7 +35,9 @@ public class Main {
                             System.out.print("Informe a quantidade de exemplares: ");
                             livro.setExemplares((entrada.nextInt()));
                             entrada.nextLine();
-                            biblioteca.addLivro(livro);
+                            if (biblioteca.addLivro(livro)) {
+                                System.out.println("Livro adicionado com sucesso.");
+                            } else System.out.println("Livro com ISBN: " + livro.getIsbn() + " já existe.");
                             break;
                         } catch (Exception e) {
                             System.out.println(e.getMessage() + "\n");
@@ -62,12 +64,17 @@ public class Main {
                             if (tipo.equalsIgnoreCase("Aluno")) {
                                 System.out.print("Informe o curso que está matriculado: ");
                                 String curso = entrada.nextLine();
-                                biblioteca.addUsuario(new Aluno(idade, nome, curso));
+                                if (biblioteca.addUsuario(new Aluno(idade, nome, curso))) {
+                                    System.out.println("Aluno chamado: " + nome + " já cadastrado");
+                                }
                             } else {
                                 System.out.print("Informe a matéria lecionada: ");
                                 String materia = entrada.nextLine();
-                                biblioteca.addUsuario(new Professor(idade, nome, materia));
+                                if (biblioteca.addUsuario(new Professor(idade, nome, materia))) {
+                                    System.out.println("Professor chamado: " + nome + " já cadastrado");
+                                }
                             }
+                            System.out.println("Usuário cadastrado com sucesso.");
                             break;
                         } catch (Exception e) {
                             System.out.println(e.getMessage() + "\n");
@@ -78,28 +85,23 @@ public class Main {
                     while (true) {
                         System.out.println("\nRemover um livro:");
                         if (!biblioteca.mostrarLivros()) {
+                            System.out.println("Nenhum livro adicionado na biblioteca.");
                             return;
                         }
                         System.out.println();
                         System.out.print("Informe o ISBN do livro: ");
-                        biblioteca.rmvLivro(entrada.nextInt());
+                        Livros livro = biblioteca.rmvLivro(entrada.nextInt());
                         entrada.nextLine();
+                        System.out.println("Livro \"" + livro.getTitulo() + "\" ISBN: " + livro.getIsbn() + " removido com sucesso");
                         System.out.print("Deseja realizar a operação novamente (Sim/Não)?");
                         if (!entrada.nextLine().equalsIgnoreCase("sim")) {
                             break;
                         }
                     }
                 }
-            
                 case 4 -> {
                     while (true) {
-                        System.out.println("\nRemover um usuário:");
-                        if (!biblioteca.mostrarUsuarios()) {
-                            return;
-                        }
-                        System.out.println();
-                        System.out.print("Informe o nome do usuário: ");
-                        biblioteca.rmvUsuario(entrada.nextLine());
+                        removerUsuario();
                         System.out.print("Deseja realizar a operação novamente (Sim/Não)?");
                         if (!entrada.nextLine().equalsIgnoreCase("sim")) {
                             break;
@@ -118,18 +120,32 @@ public class Main {
                     System.out.println(livro);
                     entrada.nextLine();
 
-                    if (!biblioteca.mostrarUsuarios()) {
-                        return;
-                    }
-                    System.out.println();
-                    System.out.print("Informe o nome do usuário: ");
-                    Usuarios usuarios = biblioteca.rmvUsuario(entrada.nextLine());
+                    Usuarios usuario = removerUsuario();
 
-                    gerenciaEmprestimo.emprestarLivro(usuarios, livro);
-                    System.out.println("OLAAAAAA");
+                    gerenciaEmprestimo.emprestarLivro(usuario, livro);
                     gerenciaEmprestimo.listarEmprestimos();
                 }
             }
         }
+    }
+
+    public static Usuarios removerUsuario() throws IOException {
+        System.out.println("\nRemover um usuário:");
+        Biblioteca biblioteca = new Biblioteca();
+            if (!biblioteca.mostrarUsuarios()) {
+                return null;
+            }
+            System.out.println();
+            String tipo;
+                while (true) {
+                    System.out.print("Informe o tipo de usuário(Professor ou Aluno): ");
+                    tipo = entrada.nextLine();
+                    if (!tipo.equalsIgnoreCase("Professor") && !tipo.equalsIgnoreCase("Aluno")) {
+                        System.out.println("Informe uma opção correta.");
+                    } else break;
+                }
+            System.out.print("Informe o nome do usuário: ");
+            Usuarios usuario = biblioteca.rmvUsuario(entrada.nextLine(), tipo);
+            return usuario;
     }
 }
