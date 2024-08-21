@@ -14,7 +14,8 @@ public class Main {
             System.out.println("3) Remover livro");
             System.out.println("4) Remover usuário");
             System.out.println("5) Emprestar livro:");
-            System.out.println("6) Listar empréstimos:");
+            System.out.println("6) Devolver livro:");
+            System.out.println("7) Listar empréstimos:");
             System.out.print(">> Opção: ");
             int opc = entrada.nextInt();
             entrada.nextLine();
@@ -109,6 +110,7 @@ public class Main {
                         if (usuario == null) {
                             break;
                         }
+                        System.out.println("Usuário: " + usuario.getNome() + " removido com sucesso.");
                         System.out.print("Deseja realizar a operação novamente (Sim/Não)?");
                         if (!entrada.nextLine().equalsIgnoreCase("sim")) {
                             break;
@@ -125,16 +127,19 @@ public class Main {
                     System.out.print("Informe o ISBN do livro: ");
                     Livros livro = biblioteca.rmvLivro(entrada.nextInt());
                     if (livro == null) return;
-                    System.out.println(livro);
                     entrada.nextLine();
 
                     System.out.println("Lista de usuários:");
                     Usuarios usuario = removerUsuario();
                     if (usuario == null) return;
 
+                    System.out.println("Empréstimo realizado com sucesso.");
                     gerenciaEmprestimo.emprestarLivro(usuario, livro);
                 }
-                case 6 -> gerenciaEmprestimo.listarEmprestimos();
+                case 6 -> {
+                    
+                }
+                case 7 -> gerenciaEmprestimo.listarEmprestimos();
             }
         }
     }

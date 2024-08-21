@@ -135,7 +135,6 @@ public class Biblioteca {
             System.out.println("Não existe nenhum " + tipoClasse.getSimpleName() + " chamado " + nome);
             return null;
         }
-        System.out.println("Usuário: " + nome + " removido com sucesso.");
         usuarioLista.remove(usuarioARemover);
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("Usuario.txt"))) {

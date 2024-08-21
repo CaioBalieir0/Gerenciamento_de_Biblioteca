@@ -1,2 +1,2 @@
-Aluno;Caio;20;Livre;porrt
 Aluno;Pedro;20;Livre;port
+Aluno;Caio;20;Livre;porrt

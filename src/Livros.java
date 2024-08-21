@@ -48,9 +48,6 @@ public class Livros {
         return exemplares;
     }
     public void setExemplares(int exemplares) {
-        if (exemplares < 1) {
-            throw new IllegalArgumentException("O número de exemplares deve ser maior que 0");
-        }
         this.exemplares = exemplares;
     }
 

@@ -42,6 +42,6 @@ public class Emprestimo {
 
     @Override
     public String toString() {
-        return livro + ";" + usuarios + ";" + dataEmprestimo + ";" + dataDevolucao;
+        return usuarios + ";" + livro + ";" + dataEmprestimo + ";" + dataDevolucao;
     }
 }
