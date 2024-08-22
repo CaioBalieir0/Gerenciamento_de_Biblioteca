@@ -11,6 +11,15 @@ public class Emprestimo {
         setUsuarios(usuario);
         setDataDevolucao(dataDevolucao);
     }
+    
+
+    public Emprestimo() {
+        this.dataEmprestimo = LocalDate.now();
+        this.dataDevolucao = dataEmprestimo.plusDays(14);
+        this.livro = null;
+        this.usuarios = null;
+    }
+
 
     public LocalDate getDataEmprestimo() {
         return dataEmprestimo;
@@ -30,6 +39,9 @@ public class Emprestimo {
         return livro;
     }
     public void setLivro(Livros livro) {
+        if (livro.getExemplares() < 1) {
+            throw new IllegalArgumentException("Não ha exemplares disponiveis para este livro");
+        }
         this.livro = livro;
     }
 
@@ -37,11 +49,14 @@ public class Emprestimo {
         return usuarios;
     }
     public void setUsuarios(Usuarios usuarios) {
+        if (usuarios.hasLivros()) {
+            throw new IllegalArgumentException("O usuário ja emprestou um livro.");
+        }
         this.usuarios = usuarios;
     }
 
     @Override
     public String toString() {
-        return usuarios + ";" + livro + ";" + dataEmprestimo + ";" + dataDevolucao;
+        return usuarios.toString() + ";" + livro.toString() + ";" + dataEmprestimo + ";" + dataDevolucao;
     }
 }

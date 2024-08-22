@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Biblioteca {
     private List<Livros> livrosLista;
@@ -28,10 +29,7 @@ public class Biblioteca {
             System.out.println("Não foi possível atualizar a lista." + e.getMessage());
         }
 
-        try (
-        BufferedWriter bw = new BufferedWriter(new FileWriter("Livros.txt", true));
-        BufferedReader br = new BufferedReader(new FileReader("Livros.txt"))
-        ) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("Livros.txt", true))) {
             if (!livrosLista.isEmpty()) {
                 for (Livros l : livrosLista) {
                     if (l.getIsbn() == livro.getIsbn()) {
@@ -100,9 +98,7 @@ public class Biblioteca {
             }
         }
 
-        try (
-        BufferedWriter bw = new BufferedWriter(new FileWriter("Usuario.txt", true));
-        BufferedReader br = new BufferedReader(new FileReader("Usuario.txt"))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("Usuario.txt", true))) {
             bw.write(usuario.toString());
             bw.newLine();
         } catch (IOException e) {
@@ -117,8 +113,8 @@ public class Biblioteca {
             System.out.println("Não foi possível atualizar a lista." + e.getMessage());
         }
 
-        if (usuarioLista == null) {
-            System.out.println("Nenhum usuário do sistema da biblioteca cadastrado.");
+        if (usuarioLista.isEmpty()) {
+            System.out.println("Nenhum usuário cadastrado no sistema da biblioteca.");
             return null;
         }
 
@@ -149,15 +145,17 @@ public class Biblioteca {
     }
 
     public void attListas() throws IOException {
+        System.out.println("Att lista");
         try (BufferedReader br = new BufferedReader(new FileReader("Usuario.txt"))) {
             usuarioLista.clear();
             String linha;
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(";");
+                boolean hasLivros = dados[3].equalsIgnoreCase("Ocupado") ? true : false;
                 if (dados[0].equals("Professor")) {
-                    usuarioLista.add(new Professor(Integer.parseInt(dados[2]), dados[1], dados[4]));
+                    usuarioLista.add(new Professor(hasLivros, Integer.parseInt(dados[2]), dados[1], dados[4]));
                 } else {
-                    usuarioLista.add(new Aluno(Integer.parseInt(dados[2]), dados[1], dados[4]));
+                    usuarioLista.add(new Aluno(hasLivros, Integer.parseInt(dados[2]), dados[1], dados[4]));
                 }
             }
         }
@@ -172,7 +170,7 @@ public class Biblioteca {
         }
     }
 
-    public boolean mostrarLivros() {
+    public boolean mostrarTodosLivros() {
         try {
             attListas();
         } catch (IOException e) {
@@ -188,7 +186,7 @@ public class Biblioteca {
         }
         return true;
     }
-    public boolean mostrarUsuarios() {
+    public boolean mostrarTodosUsuarios() {
         try {
             attListas();
         } catch (IOException e) {
@@ -203,6 +201,40 @@ public class Biblioteca {
         for (Usuarios u : usuarioLista) {
             System.out.println(u);
         }
+        return true;
+    }
+    public boolean mostrarUsuariosLivres() {
+        try {
+            attListas();
+        } catch (IOException e) {
+            System.out.println("Não foi possível atualizar a lista. " + e.getMessage());
+        }
+        List<Usuarios> usuariosLivres = usuarioLista.stream().filter(usuario -> !usuario.hasLivros()).collect(Collectors.toList());
+    
+        if (usuariosLivres.isEmpty()) {
+            System.out.println("Nenhum usuário livre.");
+            return false;
+        }
+
+        usuariosLivres.forEach(System.out::println);
+
+        return true;
+    
+    }
+    public boolean mostrarLivrosDisponiveis() {
+        try {
+            attListas();
+        } catch (IOException e) {
+            System.out.println("Não foi possível atualizar a lista. " + e.getMessage());
+        }
+        List<Livros> livrosLivres = livrosLista.stream().filter(livro -> livro.getExemplares() > 0).collect(Collectors.toList());
+    
+        if (livrosLivres.isEmpty()) {
+            System.out.println("Nenhum livro disponivel.");
+            return false;
+        }
+        
+        livrosLivres.forEach(System.out::println);
         return true;
     }
 }

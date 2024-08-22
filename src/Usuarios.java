@@ -3,10 +3,10 @@ public class Usuarios {
     private String nome;
     private boolean livros;
     
-    public Usuarios(int idade, String nome) {
+    public Usuarios(boolean livros, int idade, String nome) {
         setIdade(idade);
         setNome(nome);
-        livros = false;
+        setLivros(livros);
     }
 
     public int getIdade() {

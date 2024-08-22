@@ -1,8 +1,8 @@
 public class Aluno extends Usuarios {
     private String curso, ocupacao;
 
-    public Aluno(int idade, String nome, String curso) {
-        super(idade, nome);
+    public Aluno(boolean livros, int idade, String nome, String curso) {
+        super(livros, idade, nome);
         if (idade <= 16) {
             throw new IllegalArgumentException("A idade do aluno deve ser maior que 15 anos.");
         }

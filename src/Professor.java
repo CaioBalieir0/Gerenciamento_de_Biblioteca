@@ -1,8 +1,8 @@
 public class Professor extends Usuarios{
     private String materia, ocupacao;
 
-    public Professor(int idade, String nome, String materia) {
-        super(idade, nome);
+    public Professor(boolean livros, int idade, String nome, String materia) {
+        super(livros, idade, nome);
         if (idade <= 25) {
             throw new IllegalArgumentException("A idade do professor deve ser maior que 25 anos.");
         }

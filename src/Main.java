@@ -3,9 +3,10 @@ import java.util.Scanner;
 
 public class Main {
     static Scanner entrada = new Scanner(System.in);
+    static Biblioteca biblioteca;
     public static void main(String[] args) throws IOException {
-        Biblioteca biblioteca = new Biblioteca();
         GerenciaEmprestimo gerenciaEmprestimo = new GerenciaEmprestimo();
+        biblioteca = new Biblioteca();
 
         while (true) {
             System.out.println("--- Menu biblioteca ---");
@@ -66,13 +67,13 @@ public class Main {
                             if (tipo.equalsIgnoreCase("Aluno")) {
                                 System.out.print("Informe o curso que está matriculado: ");
                                 String curso = entrada.nextLine();
-                                if (!biblioteca.addUsuario(new Aluno(idade, nome, curso))) {
+                                if (!biblioteca.addUsuario(new Aluno(false,idade, nome, curso))) {
                                     System.out.println("Aluno chamado: " + nome + " já cadastrado");
                                 } else System.out.println("Usuário cadastrado com sucesso");
                             } else {
                                 System.out.print("Informe a matéria lecionada: ");
                                 String materia = entrada.nextLine();
-                                if (!biblioteca.addUsuario(new Professor(idade, nome, materia))) {
+                                if (!biblioteca.addUsuario(new Professor(false, idade, nome, materia))) {
                                     System.out.println("Professor chamado: " + nome + " já cadastrado");
                                 } else System.out.println("Usuário cadastrado com sucesso");
                             }
@@ -85,7 +86,7 @@ public class Main {
                 case 3 -> {
                     while (true) {
                         System.out.println("\nRemover um livro:");
-                        if (!biblioteca.mostrarLivros()) {
+                        if (!biblioteca.mostrarTodosLivros()) {
                             System.out.println("Nenhum livro adicionado na biblioteca.");
                             break;
                         }
@@ -106,6 +107,9 @@ public class Main {
                 case 4 -> {
                     System.out.println("\nRemover um usuário:");
                     while (true) {
+                        if (!biblioteca.mostrarTodosUsuarios()) {
+                            break;
+                        }
                         Usuarios usuario = removerUsuario();
                         if (usuario == null) {
                             break;
@@ -119,36 +123,37 @@ public class Main {
                 }
             
                 case 5 -> {
-                    System.out.println("\nLista de livros:");
-                    if (!biblioteca.mostrarLivros()) {
-                        return;
-                    }
+                    System.out.println("\nEmprestar um livro:");
+                    System.out.println("Lista de livros:");
+                    if (!biblioteca.mostrarLivrosDisponiveis()) break;
                     System.out.println();
                     System.out.print("Informe o ISBN do livro: ");
                     Livros livro = biblioteca.rmvLivro(entrada.nextInt());
-                    if (livro == null) return;
                     entrada.nextLine();
+                    if (livro == null) break;
 
                     System.out.println("Lista de usuários:");
+                    if (!biblioteca.mostrarUsuariosLivres()) break;
+                    System.out.println();
                     Usuarios usuario = removerUsuario();
-                    if (usuario == null) return;
-
-                    System.out.println("Empréstimo realizado com sucesso.");
-                    gerenciaEmprestimo.emprestarLivro(usuario, livro);
+                    if (usuario == null) break;
+                    
+                    gerenciaEmprestimo.emprestarLivro(livro, usuario);
                 }
                 case 6 -> {
-                    
+                    biblioteca.mostrarTodosLivros();
+                    biblioteca.mostrarTodosUsuarios();
                 }
-                case 7 -> gerenciaEmprestimo.listarEmprestimos();
+                case 7 -> {
+                    System.out.println("\nLista de livros:");
+                    gerenciaEmprestimo.listarEmprestimos();
+
+                }
             }
         }
     }
 
     public static Usuarios removerUsuario() throws IOException {
-        Biblioteca biblioteca = new Biblioteca();
-            if (!biblioteca.mostrarUsuarios()) {
-                return null;
-            }
             System.out.println();
             String tipo;
                 while (true) {
@@ -162,4 +167,5 @@ public class Main {
             Usuarios usuario = biblioteca.rmvUsuario(entrada.nextLine(), tipo);
             return usuario;
     }
+    
 }
