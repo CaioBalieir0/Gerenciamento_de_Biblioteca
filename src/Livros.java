@@ -7,7 +7,7 @@ public class Livros {
         setAno(ano);
         setAutor(autor);
         setIsbn(isbn);
-        this.exemplares = exemplares;
+        setExemplares(exemplares);
     }
     public Livros(){}
     

@@ -30,38 +30,89 @@ public class GerenciaEmprestimo {
                     usuario = new Aluno(hasLivros,Integer.parseInt(dados[2]), dados[1], dados[4]);
                 }
                 Livros livro = new Livros(dados[5], dados[6], Integer.parseInt(dados[7]), Integer.parseInt(dados[8]), Integer.parseInt(dados[9]));
-                emprestimoLista.add(new Emprestimo(livro, usuario, LocalDate.parse(dados[10]), LocalDate.parse(dados[11])));
+                Emprestimo emprestimo = new Emprestimo(livro, usuario, LocalDate.parse(dados[10]), LocalDate.parse(dados[11]));
+                emprestimo.setId(Integer.parseInt(dados[12]));
+                emprestimoLista.add(emprestimo);
             }
         } catch (Exception e) {
             System.out.println("Erro ao tentar armazenar o empréstimo.");
         }
     }
 
-    public void listarEmprestimos() {
+    public boolean listarEmprestimos(int opc) {
         attEmprestismos();
         if (emprestimoLista.isEmpty()) {
             System.out.println("Lista de empréstimos vazia.");
-            return;
+            return false;
         }
 
+        if (opc == 1) {
+            for (Emprestimo e : emprestimoLista) {
+                System.out.println(e.toString());
+            }
+            return true;
+        } 
+
         for (Emprestimo e : emprestimoLista) {
-            System.out.println(e.toString());
+            System.out.println("Usuário: " + e.getUsuarios().getClass().getSimpleName() + " " + e.getUsuarios().getNome() + " Livro: " + e.getLivro().getTitulo() + " ISBN : " + e.getLivro().getIsbn() + " ID: " + e.getId() + " Data devolução: " + e.getDataDevolucao());
         }
+        return true;
     }
 
     public void emprestarLivro(Livros livro, Usuarios usuario) throws IOException {
         attEmprestismos();
         Emprestimo emprestimo = new Emprestimo(livro, usuario, LocalDate.now(), LocalDate.now().plusDays(14));
+        attEmprestismos();
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("Emprestimos.txt", true))) {
-            System.out.println(usuario);
             bw.write(emprestimo.toString());
             bw.newLine();
             emprestimoLista.add(emprestimo);
+            livro.setExemplares(livro.getExemplares() - 1);
+            usuario.setLivros(true);
             biblioteca.addLivro(livro);
+            System.out.println(usuario);
             biblioteca.addUsuario(usuario);
         } catch (Exception e) {
             System.out.println("Não foi possível adicionar empréstimo." + e.getMessage());
+        }
+    }
+
+    public void devolverLivro(int id) throws IOException {
+        attEmprestismos();
+
+        Emprestimo emprestimoARemover = null;
+        for (Emprestimo e : emprestimoLista) {
+            System.out.println(e.getId());
+            if (e.getId() == id) {
+                emprestimoARemover = e;
+                break;
+            }
+        }
+        if (emprestimoARemover == null) {
+            System.out.println("Empréstimo não encontrado.");
+            return;
+        }
+        Livros livro = emprestimoARemover.getLivro();
+        Livros livroAtualizar = biblioteca.rmvLivro(livro.getIsbn());
+        Usuarios usuario = emprestimoARemover.getUsuarios();
+        usuario.setLivros(false);
+        biblioteca.rmvLivro(livro.getIsbn());
+        biblioteca.rmvUsuario(usuario.getNome(), usuario.getClass().getSimpleName());
+        System.out.println("Exe" + livro.getExemplares());
+        livro.setExemplares(livroAtualizar.getExemplares()+1);
+        usuario.setLivros(false);
+        biblioteca.addLivro(livro);
+        biblioteca.addUsuario(usuario);
+
+        emprestimoLista.remove(emprestimoARemover);
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("Emprestimos.txt"))) {
+            for (Emprestimo e : emprestimoLista) {
+                bw.write(e.toString());
+                bw.newLine();
+            } 
+        } catch (Exception e) {
+            System.out.println("Não foi possível atualizar a lista de emprestimos. " + e.getMessage());
         }
     }
 }

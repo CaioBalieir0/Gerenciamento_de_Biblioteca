@@ -1,1 +1,0 @@
-Aluno;Caio;20;Livre;port;Harry;Caio;2020;1234;2;2024-08-22;2024-09-05

@@ -4,12 +4,15 @@ public class Emprestimo {
     private LocalDate dataEmprestimo, dataDevolucao;
     private Livros livro;
     private Usuarios usuarios;
+    private int id;
+    private static int contador = 1;
 
     public Emprestimo(Livros livro, Usuarios usuario, LocalDate dataEmprestimo, LocalDate dataDevolucao) {
         setDataEmprestimo(dataEmprestimo);
         setLivro(livro);
         setUsuarios(usuario);
         setDataDevolucao(dataDevolucao);
+        id = contador++;
     }
     
 
@@ -55,8 +58,15 @@ public class Emprestimo {
         this.usuarios = usuarios;
     }
 
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
-        return usuarios.toString() + ";" + livro.toString() + ";" + dataEmprestimo + ";" + dataDevolucao;
+        return usuarios.toString() + ";" + livro.toString() + ";" + dataEmprestimo + ";" + dataDevolucao + ";" + id;
     }
 }

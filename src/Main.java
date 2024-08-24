@@ -17,6 +17,7 @@ public class Main {
             System.out.println("5) Emprestar livro:");
             System.out.println("6) Devolver livro:");
             System.out.println("7) Listar empréstimos:");
+            System.out.println("8) Sair");
             System.out.print(">> Opção: ");
             int opc = entrada.nextInt();
             entrada.nextLine();
@@ -141,14 +142,26 @@ public class Main {
                     gerenciaEmprestimo.emprestarLivro(livro, usuario);
                 }
                 case 6 -> {
-                    biblioteca.mostrarTodosLivros();
-                    biblioteca.mostrarTodosUsuarios();
+                    System.out.println("\nDevolver livro: ");
+                    if (!gerenciaEmprestimo.listarEmprestimos(2)) {
+                        break;
+                    }
+
+                    System.out.print("Informe o ID do empréstimo: ");
+                    int id = entrada.nextInt();
+                    entrada.nextLine();
+                    gerenciaEmprestimo.devolverLivro(id);
                 }
                 case 7 -> {
-                    System.out.println("\nLista de livros:");
-                    gerenciaEmprestimo.listarEmprestimos();
-
+                    System.out.println("\nLista de empréstimos: ");
+                    gerenciaEmprestimo.listarEmprestimos(1);
                 }
+                case 8 -> {
+                    System.out.println("Fim do programa, obrigado!");
+                    entrada.close();
+                    return;
+                }
+                default -> System.out.println("Selecione uma opção válida\n");
             }
         }
     }
@@ -167,5 +180,4 @@ public class Main {
             Usuarios usuario = biblioteca.rmvUsuario(entrada.nextLine(), tipo);
             return usuario;
     }
-    
 }
