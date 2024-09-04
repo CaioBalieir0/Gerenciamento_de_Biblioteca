@@ -17,7 +17,7 @@ public class GerenciaEmprestimo {
     }
 
     public void attEmprestismos() {
-        try (BufferedReader br = new BufferedReader(new FileReader("Emprestimos.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("emprestimos.txt"))) {
             emprestimoLista.clear();
             String linha;
             while ((linha = br.readLine()) != null) {
@@ -64,7 +64,7 @@ public class GerenciaEmprestimo {
         Emprestimo emprestimo = new Emprestimo(livro, usuario, LocalDate.now(), LocalDate.now().plusDays(14));
         attEmprestismos();
 
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("Emprestimos.txt", true))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("emprestimos.txt", true))) {
             bw.write(emprestimo.toString());
             bw.newLine();
             emprestimoLista.add(emprestimo);
@@ -106,7 +106,7 @@ public class GerenciaEmprestimo {
         biblioteca.addUsuario(usuario);
 
         emprestimoLista.remove(emprestimoARemover);
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("Emprestimos.txt"))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("emprestimos.txt"))) {
             for (Emprestimo e : emprestimoLista) {
                 bw.write(e.toString());
                 bw.newLine();

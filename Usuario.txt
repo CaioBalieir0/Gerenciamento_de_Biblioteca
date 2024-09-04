@@ -1,3 +1,0 @@
-Aluno;Pedro;20;Livre;port
-Aluno;Caio;20;Livre;port
-Aluno;Lucas;20;Livre;port

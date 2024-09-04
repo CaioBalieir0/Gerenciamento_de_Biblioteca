@@ -11,8 +11,8 @@ public class Biblioteca {
     public Biblioteca() throws IOException {
         this.livrosLista = new ArrayList<>();
         this.usuarioLista = new ArrayList<>();
-        this.bw = new BufferedWriter(new FileWriter("Livros.txt", true));
-        this.bw = new BufferedWriter(new FileWriter("Usuario.txt", true));
+        this.bw = new BufferedWriter(new FileWriter("livros.txt", true));
+        this.bw = new BufferedWriter(new FileWriter("usuarios.txt", true));
     }
 
     public List<Livros> getLivrosLista() {
@@ -29,7 +29,7 @@ public class Biblioteca {
             System.out.println("Não foi possível atualizar a lista." + e.getMessage());
         }
 
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("Livros.txt", true))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("livros.txt", true))) {
             if (!livrosLista.isEmpty()) {
                 for (Livros l : livrosLista) {
                     if (l.getIsbn() == livro.getIsbn()) {
@@ -70,7 +70,7 @@ public class Biblioteca {
         } 
         livrosLista.remove(livroARemover);
 
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("Livros.txt"));) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("livros.txt"));) {
             for (Livros l : livrosLista) {
                 bw.write(l.toString());
                 bw.newLine();
@@ -98,7 +98,7 @@ public class Biblioteca {
             }
         }
 
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("Usuario.txt", true))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("usuarios.txt", true))) {
             bw.write(usuario.toString());
             bw.newLine();
         } catch (IOException e) {
@@ -133,7 +133,7 @@ public class Biblioteca {
         }
         usuarioLista.remove(usuarioARemover);
 
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("Usuario.txt"))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("usuarios.txt"))) {
             for (Usuarios u : usuarioLista) {
                 bw.write(u.toString());
                 bw.newLine();
@@ -146,7 +146,7 @@ public class Biblioteca {
 
     public void attListas() throws IOException {
         System.out.println("Att lista");
-        try (BufferedReader br = new BufferedReader(new FileReader("Usuario.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("usuarios.txt"))) {
             usuarioLista.clear();
             String linha;
             while ((linha = br.readLine()) != null) {
@@ -160,7 +160,7 @@ public class Biblioteca {
             }
         }
 
-        try (BufferedReader br = new BufferedReader(new FileReader("Livros.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("livros.txt"))) {
             livrosLista.clear();
             String linha;
             while ((linha = br.readLine()) != null) {

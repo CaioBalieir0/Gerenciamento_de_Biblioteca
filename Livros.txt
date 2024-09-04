@@ -1,3 +1,0 @@
-harry;caio;2020;123;2
-harry;caio;2020;1234;0
-harry;caio;2020;12;2
